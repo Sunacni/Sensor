@@ -46,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    //methode executed onClick
     public void startLoad(View v) {
         float cpuUsage=0;
         //cpuUsage=readUsage();
         String s = Float.toString(cpuUsage);
         //view.setText(s);
     }
+
 
     private float readUsage() {
         try {
