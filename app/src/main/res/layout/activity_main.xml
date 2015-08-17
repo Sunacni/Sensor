@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:text="@string/button_toggle"
         android:id="@+id/toggleButton"
+        android:textOff="OFF"
+        android:textOn="ON"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
 
@@ -37,5 +39,15 @@
         android:id="@+id/textView2"
         android:layout_below="@+id/button"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/label_id"
+        android:id="@+id/textView3"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="55dp" />
 
 </RelativeLayout>

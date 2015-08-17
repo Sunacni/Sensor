@@ -1,27 +1,40 @@
 package com.iot.fb.sensor;
 
+import android.content.Context;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
-
+import android.provider.Settings.Secure;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
-    public TextView view = (TextView) findViewById(R.id.textView2);
+    public TextView view;//label under butto
+    public TextView view2;//label to display system ID
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        view = (TextView) findViewById(R.id.textView2);
+        view2 = (TextView) findViewById(R.id.textView3);
+        final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+        final String android_id = tm.getDeviceId();
+        view2.setText(android_id);
     }
 
     @Override
@@ -46,14 +59,39 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //methode executed onClick
+    //methode executed onClick button
     public void startLoad(View v) {
-        float cpuUsage=0;
-        //cpuUsage=readUsage();
+        float cpuUsage = readUsage();
         String s = Float.toString(cpuUsage);
-        //view.setText(s);
+        view.setText(s);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                insert();
+            }
+        }).start();
     }
 
+    protected void insert(){
+        try{
+            Class.forName("con.mysql.jdbc.Driver");
+            Connection c = DriverManager.getConnection("jdbc:mzsql://h17zdb.hcc.uni-magdeburg.de", "STUDENT04", "initial");
+            PreparedStatement st = c.prepareStatement("insert into student values (?,?,?)");
+            int time = (int) (System.currentTimeMillis());
+            Timestamp tsTemp = new Timestamp(time);
+            st.setTimestamp(1, tsTemp);//TIMESTAMP YYYY-MM-DD HH:SS.FF3
+            st.setFloat(2, 33);//VALUE
+            st.setInt(3, 99);//SYSTEM_ID
+            st.execute();
+            st.close();
+            c.close();
+
+        }
+        catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+        }
+    }
 
     private float readUsage() {
         try {
