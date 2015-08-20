@@ -3,7 +3,8 @@
 
     <string name="label_toggle">data transmission to HANA</string>
     <string name="action_settings">Settings</string>
-    <string name="button_toggle">Settings</string>
+    <string name="button_dbcon">DB connect</string>
     <string name="button_load">Start load</string>
     <string name="label_load">-</string>
+    <string name="label_id">ID xxx</string>
 </resources>
