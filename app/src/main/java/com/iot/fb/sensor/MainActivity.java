@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         String s = Float.toString(cpuUsage);
         view.setText(s);
 
+        //connecting to DB in an extra thread
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -73,11 +74,14 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    //this methode opens DB connection and inserts statement
     protected void insert(){
         try{
-            Class.forName("con.mysql.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mzsql://h17zdb.hcc.uni-magdeburg.de", "STUDENT04", "initial");
-            PreparedStatement st = c.prepareStatement("insert into student values (?,?,?)");
+            Class.forName("com.sap.db.jdbc.Driver").newInstance();
+            //instance: 17
+            //name: h17zdb.hcc.uni-magdeburg.de
+            java.sql.Connection c = java.sql.DriverManager.getConnection("jdbc:sap://h17zdb.hcc.uni-magdeburg.de:31715/HDB", "STUDENT04", "initial");
+            PreparedStatement st = c.prepareStatement("insert into \"IOT\".\"PHONE_DATA\" values (?,?,?)");
             int time = (int) (System.currentTimeMillis());
             Timestamp tsTemp = new Timestamp(time);
             st.setTimestamp(1, tsTemp);//TIMESTAMP YYYY-MM-DD HH:SS.FF3
@@ -87,12 +91,15 @@ public class MainActivity extends AppCompatActivity {
             st.close();
             c.close();
 
+
         }
-        catch (ClassNotFoundException | SQLException e){
+        catch (java.lang.ClassNotFoundException | SQLException | java.lang.InstantiationException | java.lang.ExceptionInInitializerError | java.lang.IllegalAccessException e){
             e.printStackTrace();
+            view.setText(e.getMessage());
         }
     }
 
+    //this method contains code to retreive CPU usage
     private float readUsage() {
         try {
             RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
