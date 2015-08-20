@@ -12,16 +12,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="68dp" />
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_toggle"
-        android:id="@+id/toggleButton"
-        android:textOff="OFF"
-        android:textOn="ON"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,5 +39,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="55dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_dbcon"
+        android:id="@+id/button2"
+        android:layout_below="@+id/textView"
+        android:layout_alignEnd="@+id/button"
+        android:onClick="startConnect"/>
 
 </RelativeLayout>

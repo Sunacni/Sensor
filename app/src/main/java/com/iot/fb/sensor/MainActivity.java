@@ -17,7 +17,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
+//import com.sap.*;
 import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,11 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //methode executed onClick button
-    public void startLoad(View v) {
-        float cpuUsage = readUsage();
-        String s = Float.toString(cpuUsage);
-        view.setText(s);
-
+    public void startConnect(View v) {
         //connecting to DB in an extra thread
         new Thread(new Runnable() {
             @Override
@@ -74,10 +70,18 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    //this methode opens DB connection and inserts statement
+
+    //methode executed onClick button
+    public void startLoad(View v) {
+        float cpuUsage = readUsage();
+        String s = Float.toString(cpuUsage);
+        view.setText(s);
+    }
+
+    //this method opens DB connection and inserts statement
     protected void insert(){
         try{
-            Class.forName("com.sap.db.jdbc.Driver").newInstance();
+            Class.forName("com.sap.db.jdbc.Driver");
             //instance: 17
             //name: h17zdb.hcc.uni-magdeburg.de
             java.sql.Connection c = java.sql.DriverManager.getConnection("jdbc:sap://h17zdb.hcc.uni-magdeburg.de:31715/HDB", "STUDENT04", "initial");
@@ -87,15 +91,14 @@ public class MainActivity extends AppCompatActivity {
             st.setTimestamp(1, tsTemp);//TIMESTAMP YYYY-MM-DD HH:SS.FF3
             st.setFloat(2, 33);//VALUE
             st.setInt(3, 99);//SYSTEM_ID
-            st.execute();
+            st.executeUpdate();
             st.close();
             c.close();
 
 
         }
-        catch (java.lang.ClassNotFoundException | SQLException | java.lang.InstantiationException | java.lang.ExceptionInInitializerError | java.lang.IllegalAccessException e){
+        catch (java.lang.ClassNotFoundException | /*java.lang.InstantiationException | java.lang.IllegalAccessException |*/ SQLException | java.lang.ExceptionInInitializerError  e){
             e.printStackTrace();
-            view.setText(e.getMessage());
         }
     }
 
